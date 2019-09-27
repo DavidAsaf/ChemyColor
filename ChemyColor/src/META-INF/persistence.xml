@@ -7,11 +7,15 @@
     <class>CapaDatos.Bodegas</class>
     <class>CapaDatos.Articulos</class>
     <class>CapaDatos.Grupos</class>
+    <class>CapaDatos.Usuarios</class>
+    <class>CapaDatos.Proveedores</class>
+    <class>CapaDatos.Tipocontribuyente</class>
+    <class>CapaDatos.Tipousuarios</class>
     <properties>
-      <property name="javax.persistence.jdbc.url" value="jdbc:oracle:thin:@localhost:1521:XE"/>
+      <property name="javax.persistence.jdbc.url" value="jdbc:oracle:thin:@MarioRivera:1522:XE"/>
       <property name="javax.persistence.jdbc.user" value="system"/>
       <property name="javax.persistence.jdbc.driver" value="oracle.jdbc.OracleDriver"/>
-      <property name="javax.persistence.jdbc.password" value="admin"/>
+      <property name="javax.persistence.jdbc.password" value="mario1993"/>
       <property name="javax.persistence.schema-generation.database.action" value="create"/>
     </properties>
   </persistence-unit>
