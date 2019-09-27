@@ -3,16 +3,18 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package CapaDatos;
+package CapaNegocios;
 
-import CapaDatos.exceptions.NonexistentEntityException;
-import CapaDatos.exceptions.PreexistingEntityException;
 import java.io.Serializable;
-import java.math.BigDecimal;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import CapaDatos.Articulos;
+import CapaDatos.Bodegas;
+import CapaNegocios.exceptions.NonexistentEntityException;
+import CapaNegocios.exceptions.PreexistingEntityException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -20,7 +22,7 @@ import javax.persistence.EntityManagerFactory;
 
 /**
  *
- * @author gerso
+ * @author mario
  */
 public class BodegasJpaController implements Serializable {
 

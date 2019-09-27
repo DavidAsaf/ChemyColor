@@ -3,23 +3,26 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package CapaDatos;
+package CapaNegocios;
 
-import CapaDatos.exceptions.NonexistentEntityException;
-import CapaDatos.exceptions.PreexistingEntityException;
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.util.List;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import CapaDatos.Proveedores;
+import CapaDatos.Tipoproveedores;
+import CapaNegocios.exceptions.NonexistentEntityException;
+import CapaNegocios.exceptions.PreexistingEntityException;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 
 /**
  *
- * @author gerso
+ * @author mario
  */
 public class TipoproveedoresJpaController implements Serializable {
 
@@ -33,11 +36,29 @@ public class TipoproveedoresJpaController implements Serializable {
     }
 
     public void create(Tipoproveedores tipoproveedores) throws PreexistingEntityException, Exception {
+        if (tipoproveedores.getProveedoresList() == null) {
+            tipoproveedores.setProveedoresList(new ArrayList<Proveedores>());
+        }
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
+            List<Proveedores> attachedProveedoresList = new ArrayList<Proveedores>();
+            for (Proveedores proveedoresListProveedoresToAttach : tipoproveedores.getProveedoresList()) {
+                proveedoresListProveedoresToAttach = em.getReference(proveedoresListProveedoresToAttach.getClass(), proveedoresListProveedoresToAttach.getCodigoproveedor());
+                attachedProveedoresList.add(proveedoresListProveedoresToAttach);
+            }
+            tipoproveedores.setProveedoresList(attachedProveedoresList);
             em.persist(tipoproveedores);
+            for (Proveedores proveedoresListProveedores : tipoproveedores.getProveedoresList()) {
+                Tipoproveedores oldCodtipoprovOfProveedoresListProveedores = proveedoresListProveedores.getCodtipoprov();
+                proveedoresListProveedores.setCodtipoprov(tipoproveedores);
+                proveedoresListProveedores = em.merge(proveedoresListProveedores);
+                if (oldCodtipoprovOfProveedoresListProveedores != null) {
+                    oldCodtipoprovOfProveedoresListProveedores.getProveedoresList().remove(proveedoresListProveedores);
+                    oldCodtipoprovOfProveedoresListProveedores = em.merge(oldCodtipoprovOfProveedoresListProveedores);
+                }
+            }
             em.getTransaction().commit();
         } catch (Exception ex) {
             if (findTipoproveedores(tipoproveedores.getCodtipoprov()) != null) {
@@ -56,7 +77,34 @@ public class TipoproveedoresJpaController implements Serializable {
         try {
             em = getEntityManager();
             em.getTransaction().begin();
+            Tipoproveedores persistentTipoproveedores = em.find(Tipoproveedores.class, tipoproveedores.getCodtipoprov());
+            List<Proveedores> proveedoresListOld = persistentTipoproveedores.getProveedoresList();
+            List<Proveedores> proveedoresListNew = tipoproveedores.getProveedoresList();
+            List<Proveedores> attachedProveedoresListNew = new ArrayList<Proveedores>();
+            for (Proveedores proveedoresListNewProveedoresToAttach : proveedoresListNew) {
+                proveedoresListNewProveedoresToAttach = em.getReference(proveedoresListNewProveedoresToAttach.getClass(), proveedoresListNewProveedoresToAttach.getCodigoproveedor());
+                attachedProveedoresListNew.add(proveedoresListNewProveedoresToAttach);
+            }
+            proveedoresListNew = attachedProveedoresListNew;
+            tipoproveedores.setProveedoresList(proveedoresListNew);
             tipoproveedores = em.merge(tipoproveedores);
+            for (Proveedores proveedoresListOldProveedores : proveedoresListOld) {
+                if (!proveedoresListNew.contains(proveedoresListOldProveedores)) {
+                    proveedoresListOldProveedores.setCodtipoprov(null);
+                    proveedoresListOldProveedores = em.merge(proveedoresListOldProveedores);
+                }
+            }
+            for (Proveedores proveedoresListNewProveedores : proveedoresListNew) {
+                if (!proveedoresListOld.contains(proveedoresListNewProveedores)) {
+                    Tipoproveedores oldCodtipoprovOfProveedoresListNewProveedores = proveedoresListNewProveedores.getCodtipoprov();
+                    proveedoresListNewProveedores.setCodtipoprov(tipoproveedores);
+                    proveedoresListNewProveedores = em.merge(proveedoresListNewProveedores);
+                    if (oldCodtipoprovOfProveedoresListNewProveedores != null && !oldCodtipoprovOfProveedoresListNewProveedores.equals(tipoproveedores)) {
+                        oldCodtipoprovOfProveedoresListNewProveedores.getProveedoresList().remove(proveedoresListNewProveedores);
+                        oldCodtipoprovOfProveedoresListNewProveedores = em.merge(oldCodtipoprovOfProveedoresListNewProveedores);
+                    }
+                }
+            }
             em.getTransaction().commit();
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
@@ -85,6 +133,11 @@ public class TipoproveedoresJpaController implements Serializable {
                 tipoproveedores.getCodtipoprov();
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The tipoproveedores with id " + id + " no longer exists.", enfe);
+            }
+            List<Proveedores> proveedoresList = tipoproveedores.getProveedoresList();
+            for (Proveedores proveedoresListProveedores : proveedoresList) {
+                proveedoresListProveedores.setCodtipoprov(null);
+                proveedoresListProveedores = em.merge(proveedoresListProveedores);
             }
             em.remove(tipoproveedores);
             em.getTransaction().commit();
