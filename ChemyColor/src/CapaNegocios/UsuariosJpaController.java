@@ -18,6 +18,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 
 /**
  *
@@ -26,7 +27,7 @@ import javax.persistence.EntityManagerFactory;
 public class UsuariosJpaController implements Serializable {
 
     public UsuariosJpaController(EntityManagerFactory emf) {
-        this.emf = emf;
+       this.emf = emf;
     }
     private EntityManagerFactory emf = null;
 

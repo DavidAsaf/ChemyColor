@@ -8,7 +8,7 @@ create sequence CodigoTipoContribuyente1 minvalue 1 start with 1 cache 10;
 
 insert into TipoContribuyente values ( CodigoTipoContribuyente1.nextval ,'Grande');
 insert into TipoContribuyente values (CodigoTipoContribuyente1.nextval ,'Mediana');
-insert into TipoContribuyente values (CodigoTipoContribuyente1.nextval ,'Pequeña');
+insert into TipoContribuyente values (CodigoTipoContribuyente1.nextval ,'Pequeï¿½a');
 
 
 create table TipoProveedores
@@ -197,11 +197,7 @@ CodTipoUsuario int primary key,
 TipoUsuario varchar(50) not null
 );
 
-create sequence SeqCodTipoUsuario 
-maxvalue 99999999999
-start with 1
-minvalue 1  
-cache 10;
+create sequence tipousuario1 minvalue 1 start with 1 cache 10;
 
 insert into TipoUsuarios values (CodTipoUsuario.nextval,'Administrador');
 insert into TipoUsuarios values (CodTipoUsuario.nextval,'Jefe de Bodega');
@@ -223,6 +219,8 @@ Direccion varchar(300),
 Estado integer
 );
 
+create sequence usuario1 minvalue 1 start with 1 cache 10;
+
 --Para poner un usuario por default.
 INSERT INTO 
 	Usuarios 
@@ -240,7 +238,7 @@ CREATE TABLE HistorialFacturas
 Codigo INT PRIMARY KEY,
 NumFactura VARCHAR(25) NOT NULL,
 cont_O_credit integer NOT NULL, --Variable para saber si es al contado o al credito. Contado = true y Credito = false
-CantidadDiasCredit INT, --Variable para saber la cantidad de los dias si es al crédito
+CantidadDiasCredit INT, --Variable para saber la cantidad de los dias si es al crï¿½dito
 Estado integer NOT NULL, --Variable para saber si es entrada o salida. Entrada = false(0) y Salida = true(1)
 CodigoBodega INT, FOREIGN KEY (CodigoBodega) REFERENCES Bodegas(CodigoBodega),
 CodigoArticulo INT, FOREIGN KEY (CodigoArticulo) REFERENCES Articulos(CodigoArticulo),
@@ -251,18 +249,18 @@ Ticket VARCHAR(50),
 AjusteInventario VARCHAR(100),
 CodigoProveedor INT, FOREIGN KEY (CodigoProveedor) REFERENCES Proveedores(CodigoProveedor),
 
---entradas simbología = e
+--entradas simbologï¿½a = e
 eUnidad INT,
 ePrecio decimal(18,4),
 eTotal decimal(18,4),
 
---salidas simbología = o (Out en ingles)
+--salidas simbologï¿½a = o (Out en ingles)
 oUnidad INT,
 oPrecio decimal(18,4),
 oTotal decimal(18,4),
 oCliente VARCHAR(100),
 
---Saldos simbología = s
+--Saldos simbologï¿½a = s
 sUnidad INT,
 sCostoPromedio decimal(18,4),
 sTotal decimal(18,4),

@@ -5,17 +5,26 @@
  */
 package CapaPresentacion;
 
+
+import CapaDatos.Tipoproveedores;
+import CapaNegocios.Entidad;
+import CapaNegocios.TipoproveedoresJpaController;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author mario
  */
 public class TipoProveedor extends javax.swing.JFrame {
-
+//    TipoproveedoresJpaController tabla = new TipoproveedoresJpaController(Entidad.getInstance());
     /**
      * Creates new form TipoProveedor
      */
     public TipoProveedor() {
         initComponents();
+//        verTabla();
     }
 
     /**
@@ -36,7 +45,7 @@ public class TipoProveedor extends javax.swing.JFrame {
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jLabel12 = new javax.swing.JLabel();
-        jTextField11 = new javax.swing.JTextField();
+        txttipo = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -46,16 +55,21 @@ public class TipoProveedor extends javax.swing.JFrame {
         jLabel11.setText("Buscar Tipo:");
 
         jButton5.setText("Registar");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {},
+                {},
+                {},
+                {}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+
             }
         ));
         jScrollPane1.setViewportView(jTable1);
@@ -85,7 +99,7 @@ public class TipoProveedor extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel12)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jTextField11, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txttipo, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(38, 38, 38)
                         .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
@@ -107,7 +121,7 @@ public class TipoProveedor extends javax.swing.JFrame {
                 .addGap(55, 55, 55)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel12)
-                    .addComponent(jTextField11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txttipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton5))
                 .addGap(94, 94, 94)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -124,6 +138,21 @@ public class TipoProveedor extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+//        verTabla();
+        String tipo = this.txttipo.getText();
+        TipoproveedoresJpaController t = new TipoproveedoresJpaController(Entidad.getInstance());
+        Tipoproveedores ce = new Tipoproveedores();
+        ce.setTipoprov(tipo);
+        
+        try {
+            t.create(ce);
+            JOptionPane.showMessageDialog(null,"Datos Registrados");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.toString()+"error");
+        }
+    }//GEN-LAST:event_jButton5ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -159,7 +188,52 @@ public class TipoProveedor extends javax.swing.JFrame {
             }
         });
     }
-
+//
+//    public static DefaultTableModel tbpro;
+//      private void verTabla(){
+//          try {
+//              tbpro = (new DefaultTableModel ( 
+//              null, new String[] {
+//              "ID","Nombre" }){
+//              Class[] types = new Class []{
+//              java.lang.String.class,
+//              java.lang.String.class
+//              };
+//              boolean[] canEdit = new boolean[]{
+//              false,false    
+//              };
+//              @Override
+//              public  Class getColumnClass(int columbIndex){
+//               return types [columbIndex];   
+//              }
+//              @Override
+//              public boolean isCellEditable(int rowIdex, int colIndex){
+//                  return canEdit[colIndex];
+//              }
+//              });
+//              jTable1.setModel(tbpro);
+//              } catch (Exception e) {
+//                  JOptionPane.showMessageDialog(null, e.toString()+"error");
+//          }
+//      }
+     
+//      private void llenar(){
+//          try {
+//            Object A[] = null;
+//            List<Tipoproveedores>Listatipo;
+//            Listatipo=tabla.findTipoproveedoresEntities();
+//              for (int i = 0; i < Listatipo.size(); i++) {
+//                  tbpro.addRow(A);
+//                  tbpro.setValueAt(Listatipo.get(i).getCodtipoprov(), i, 0);
+//                  tbpro.setValueAt(Listatipo.get(i).getTipoprov(), i, 1);
+//              }
+//              
+//          } catch (Exception e) {
+//              JOptionPane.showMessageDialog(this, e.getMessage());
+//          }
+//      }
+    
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
@@ -170,6 +244,6 @@ public class TipoProveedor extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField10;
-    private javax.swing.JTextField jTextField11;
+    private javax.swing.JTextField txttipo;
     // End of variables declaration//GEN-END:variables
 }
